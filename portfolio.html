@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Funoon FZC | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@600;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-color: #1e1a16;
+      --primary-color: #a67c52;
+      --text-color: #f3f3f3;
+      --accent-color: #e2b07e;
+      --header-bg: #3a2a22;
+      --header-text: #f3f3f3;
+      --card-bg: #2c211b;
+      --card-shadow: rgba(166, 124, 82, 0.3);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Courier New', Courier, monospace;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: var(--header-bg);
+      border-bottom: 2px solid var(--accent-color);
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo {
+      height: 100px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    nav a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 20px;
+    }
+
+    nav a:hover {
+      color: var(--accent-color);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      nav {
+        flex-direction: column;
+        margin-top: 0.5rem;
+      }
+    }
+
+    main {
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: var(--accent-color);
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--primary-color);
+      margin-bottom: 2.5rem;
+      font-style: italic;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem; /* smaller gap for closer items */
+    }
+
+    .gallery-item {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 10px var(--card-shadow);
+      width: 280px;
+      height: 210px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px var(--accent-color);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Hide captions */
+    .gallery-item p {
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      background-color: var(--card-bg);
+      border-top: 2px solid var(--primary-color);
+      font-size: 0.9rem;
+      font-family: 'Courier New', Courier, monospace;
+      margin-top: 3rem;
+      color: var(--text-color);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="Funoon Logo.png" alt="Funoon Logo" class="logo" />
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="contact.html">Reviews</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Our Portfolio</h1>
+    <p class="subtitle">Here are some of our previous works and custom product orders.</p>
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="order1.jpg" alt="Custom Keychain" />
+      </div>
+      <div class="gallery-item">
+        <img src="order2.jpg" alt="Car Silhouette" />
+      </div>
+      <div class="gallery-item">
+        <img src="order3.jpg" alt="Perfume Box" />
+      </div>
+      <div class="gallery-item">
+        <img src="order4.jpg" alt="Custom Stickers" />
+      </div>
+      <div class="gallery-item">
+        <img src="order5.jpg" alt="Logo T-Shirts" />
+      </div>
+<div class="gallery-item">
+        <img src="order6.jpg" alt="Logo T-Shirts" />
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Funoon FZC. All rights reserved.</p>
+  </footer>
+</body>
+</html>
