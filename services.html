@@ -98,6 +98,7 @@
       position: relative;
       overflow: hidden;
       color: var(--text-color);
+      text-align: left;
     }
 
     section.service h2 {
@@ -106,9 +107,16 @@
       margin-bottom: 1rem;
     }
 
-    section.service p {
+    section.service p, section.service ul {
       font-size: 1.2rem;
       line-height: 1.5;
+    }
+
+    section.service ul {
+      padding-left: 1.2rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      list-style-type: disc;
     }
 
     /* Fade-in animations */
@@ -126,6 +134,30 @@
         opacity: 1;
         transform: translateY(0);
       }
+    }
+
+    /* Image placeholders container */
+    .image-placeholders {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .image-placeholder {
+      width: 150px;
+      height: 150px;
+      background: #4a3a2a;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ccc;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 0.5rem;
+      box-sizing: border-box;
     }
 
     footer {
@@ -156,7 +188,24 @@
 
     <section class="service fade-in">
       <h2>3D Printing Customization</h2>
-      <p>We bring your ideas to life with personalized 3D-printed products. Whether it's keychains, figurines, or prototypes, our precision printers deliver high-quality results tailored to your specifications.</p>
+      <p>We bring your ideas to life with personalized 3D-printed products. Our specialties include:</p>
+      <ul>
+        <li>Custom Keychains – Personalized name, logo, and event-based keychains</li>
+        <li>Number Plate Keychains – Mini replicas of your vehicle’s number plate</li>
+        <li>Car Silhouette Keychains – 3D-printed car outlines, perfect for décor or gifting</li>
+        <li>Logo NFC Keychains – Modern keychains with NFC integration for smart use</li>
+        <li>Logo Keychains – Branded keychains tailored for business promotions</li>
+        <li>Car Hangings – Unique car accessories designed with precision</li>
+        <li><em>Many more to come — any 3D printed model you can imagine!</em></li>
+      </ul>
+
+      <div class="image-placeholders">
+        <div class="image-placeholder">Image 1<br />Keychains</div>
+        <div class="image-placeholder">Image 2<br />Number Plates</div>
+        <div class="image-placeholder">Image 3<br />Car Silhouettes</div>
+        <div class="image-placeholder">Image 4<br />Logo NFC Keychains</div>
+        <div class="image-placeholder">Image 5<br />Car Hangings</div>
+      </div>
     </section>
 
     <section class="service fade-in">
