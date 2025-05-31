@@ -42,33 +42,27 @@
       object-fit: contain;
     }
 
-     nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 1.2rem;
-  margin-top: 1rem;
-}
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
 
-nav a {
-  color: var(--text-color);
-  text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.3s, color 0.3s;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 20px;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  background-color: #3b2b21; /* Dark brown background */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
+    nav a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 20px;
+    }
 
-nav a:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-  color: var(--accent-color);
-}
-
+    nav a:hover {
+      color: var(--accent-color);
+    }
 
     @media (max-width: 768px) {
       header {
@@ -161,12 +155,12 @@ nav a:hover {
 <body>
   <header>
     <img src="Funoon Logo.png" alt="Funoon Logo" class="logo">
-   <nav>
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="services.html">Services</a>
-  <a href="orders.html">Previous Orders</a>
-  <a href="reviews.html">Customer Reviews</a>
+    <nav>
+  <a href="index.html">Home</a> |
+  <a href="about.html">About</a> |
+  <a href="services.html">Services</a> |
+  <a href="orders.html">Previous Orders</a> |
+  <a href="reviews.html">Customer Reviews</a> |
 </nav>
 
   </header>
