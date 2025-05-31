@@ -53,9 +53,8 @@
       color: var(--text-color);
       text-decoration: none;
       font-weight: 500;
-      transition: color 0.3s;
-      font-family: 'Courier New', Courier, monospace;
       font-size: 20px;
+      transition: color 0.3s;
     }
 
     nav a:hover {
@@ -77,10 +76,9 @@
 
     main {
       padding: 4rem 2rem;
-      max-width: 900px;
+      max-width: 1000px;
       margin: 0 auto;
       text-align: center;
-      font-family: 'Courier New', Courier, monospace;
     }
 
     main h1 {
@@ -96,9 +94,7 @@
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(166, 124, 82, 0.3);
       position: relative;
-      overflow: hidden;
       color: var(--text-color);
-      text-align: left;
     }
 
     section.service h2 {
@@ -107,16 +103,9 @@
       margin-bottom: 1rem;
     }
 
-    section.service p, section.service ul {
+    section.service p {
       font-size: 1.2rem;
       line-height: 1.5;
-    }
-
-    section.service ul {
-      padding-left: 1.2rem;
-      margin-top: 0;
-      margin-bottom: 1rem;
-      list-style-type: disc;
     }
 
     /* Fade-in animations */
@@ -136,28 +125,38 @@
       }
     }
 
-    /* Image placeholders container */
-    .image-placeholders {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 1rem;
+    .product-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
     }
 
-    .image-placeholder {
-      width: 150px;
-      height: 150px;
-      background: #4a3a2a;
+    .product {
+      background: #3b2e24;
+      padding: 1rem;
+      border-radius: 10px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    .product:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(166, 124, 82, 0.5);
+    }
+
+    .product img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
       border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ccc;
-      font-size: 0.9rem;
-      text-align: center;
-      padding: 0.5rem;
-      box-sizing: border-box;
+    }
+
+    .product-name {
+      margin-top: 0.8rem;
+      font-size: 1rem;
+      color: var(--accent-color);
+      font-weight: bold;
     }
 
     footer {
@@ -166,7 +165,6 @@
       background-color: #2c211b;
       border-top: 2px solid var(--primary-color);
       font-size: 0.9rem;
-      font-family: 'Courier New', Courier, monospace;
       margin-top: 3rem;
     }
   </style>
@@ -187,40 +185,41 @@
     <h1 class="fade-in">Our Services</h1>
 
     <section class="service fade-in">
-      <h2>3D Printing Customization</h2>
-      <p>We bring your ideas to life with personalized 3D-printed products. Our specialties include:</p>
-      <ul>
-        <li>Custom Keychains – Personalized name, logo, and event-based keychains</li>
-        <li>Number Plate Keychains – Mini replicas of your vehicle’s number plate</li>
-        <li>Car Silhouette Keychains – 3D-printed car outlines, perfect for décor or gifting</li>
-        <li>Logo NFC Keychains – Modern keychains with NFC integration for smart use</li>
-        <li>Logo Keychains – Branded keychains tailored for business promotions</li>
-        <li>Car Hangings – Unique car accessories designed with precision</li>
-        <li><em>Many more to come — any 3D printed model you can imagine!</em></li>
-      </ul>
-
-      <div class="image-placeholders">
-        <div class="image-placeholder">Image 1<br />Keychains</div>
-        <div class="image-placeholder">Image 2<br />Number Plates</div>
-        <div class="image-placeholder">Image 3<br />Car Silhouettes</div>
-        <div class="image-placeholder">Image 4<br />Logo NFC Keychains</div>
-        <div class="image-placeholder">Image 5<br />Car Hangings</div>
+      <h2>3D Printing Products</h2>
+      <p>Explore our creative range of personalized 3D-printed items. Click on a product to chat with us directly via WhatsApp!</p>
+      <div class="product-gallery">
+        <a class="product" href="https://wa.me/971507562833?text=Hi!%20I'm%20interested%20in%20this%20product:%20License%20Plate%20Keychain.%20I'd%20love%20to%20place%20an%20order%20or%20learn%20more%20about%20it!" target="_blank">
+          <img src="license plate.png" alt="License Plate Keychain">
+          <div class="product-name">License Plate Keychain</div>
+        </a>
+        <a class="product" href="https://wa.me/971507562833?text=Hi!%20I'm%20interested%20in%20this%20product:%20NFC%20Logo%20Keychain.%20I'd%20love%20to%20place%20an%20order%20or%20learn%20more%20about%20it!" target="_blank">
+          <img src="nfc logo.png" alt="NFC Logo Keychain">
+          <div class="product-name">NFC Logo Keychain</div>
+        </a>
+        <a class="product" href="https://wa.me/971507562833?text=Hi!%20I'm%20interested%20in%20this%20product:%20Car%20Hanging.%20I'd%20love%20to%20place%20an%20order%20or%20learn%20more%20about%20it!" target="_blank">
+          <img src="car hanging.png" alt="Car Hanging">
+          <div class="product-name">Car Hanging</div>
+        </a>
+        <a class="product" href="https://wa.me/971507562833?text=Hi!%20I'm%20interested%20in%20this%20product:%20Car%20Silhouette.%20I'd%20love%20to%20place%20an%20order%20or%20learn%20more%20about%20it!" target="_blank">
+          <img src="car silhoutte.png" alt="Car Silhouette">
+          <div class="product-name">Car Silhouette Keychain</div>
+        </a>
       </div>
     </section>
 
     <section class="service fade-in">
       <h2>Handcrafted Accessories</h2>
-      <p>Explore our range of uniquely designed handcrafted accessories, from elegant jewelry pieces to bespoke decorative items, all made with passion and attention to detail.</p>
+      <p>From elegant jewelry to unique décor, our handcrafted products add a touch of personality and charm to any space.</p>
     </section>
 
     <section class="service fade-in">
       <h2>Promotional Merchandise</h2>
-      <p>Boost your brand with customized promotional products like branded mugs, t-shirts, and corporate giveaways. We ensure your message reaches your audience with style and impact.</p>
+      <p>Get your brand noticed with custom mugs, T-shirts, and giveaways tailored for events, teams, and marketing campaigns.</p>
     </section>
 
     <section class="service fade-in">
-      <h2>Branding Solutions</h2>
-      <p>From logo design to product packaging, our branding services help your business stand out. We create cohesive, memorable branding materials tailored to your unique identity.</p>
+      <h2>Branding & Packaging</h2>
+      <p>We offer everything from logo design to custom boxes, stickers, acrylic letters, and metal nameplates to boost your brand identity.</p>
     </section>
   </main>
 
