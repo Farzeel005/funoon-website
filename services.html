@@ -22,6 +22,7 @@
       font-family: 'Courier New', Courier, monospace;
       background-color: var(--bg-color);
       color: var(--text-color);
+      overflow-x: hidden;
     }
 
     header {
@@ -32,15 +33,15 @@
       padding: 1rem 2rem;
       background-color: var(--header-bg);
       border-bottom: 2px solid var(--accent-color);
+      animation: slideInTop 1s ease;
     }
 
     .logo {
       height: 100px;
-      max-width: 100%;
       object-fit: contain;
     }
 
-   nav {
+    nav {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
@@ -53,22 +54,21 @@
       color: var(--text-color);
       text-decoration: none;
       font-weight: 500;
-      transition: color 0.3s;
       font-family: 'Courier New', Courier, monospace;
       font-size: 20px;
+      transition: all 0.3s ease;
     }
 
     nav a:hover {
       color: var(--accent-color);
+      transform: scale(1.05);
     }
-
 
     @media (max-width: 768px) {
       header {
         flex-direction: column;
         text-align: center;
       }
-
       nav {
         flex-direction: column;
         margin-top: 0.5rem;
@@ -82,10 +82,13 @@
       text-align: center;
     }
 
-    main h1 {
+    h1 {
       font-size: 3rem;
       color: var(--accent-color);
-      margin-bottom: 2rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      animation: fadeIn 1.5s ease;
     }
 
     .section-title {
@@ -95,6 +98,7 @@
       color: var(--primary-color);
       border-bottom: 3px solid var(--accent-color);
       padding-bottom: 0.3rem;
+      animation: fadeInUp 1s ease;
     }
 
     section.service {
@@ -104,6 +108,14 @@
       border-radius: 8px;
       box-shadow: 0 0 10px var(--card-shadow);
       text-align: left;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    section.service.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     section.service h2 {
@@ -117,15 +129,36 @@
       line-height: 1.5;
     }
 
+    .open-modal-btn {
+      background-color: var(--accent-color);
+      color: var(--bg-color);
+      padding: 0.8rem 1.2rem;
+      font-weight: bold;
+      border-radius: 8px;
+      margin-top: 1rem;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .open-modal-btn:hover {
+      background-color: var(--primary-color);
+      color: var(--text-color);
+      transform: scale(1.05);
+    }
+
     footer {
       text-align: center;
       padding: 2rem 1rem;
       background-color: var(--card-bg);
       border-top: 2px solid var(--primary-color);
       margin-top: 3rem;
+      animation: fadeIn 1.2s ease;
     }
 
-    /* Modal */
+    /* Modal Animation */
+      /* Modal Animation */
     .modal {
       display: none;
       position: fixed;
@@ -136,6 +169,7 @@
       height: 100%;
       overflow: hidden;
       background-color: rgba(0, 0, 0, 0.85);
+      animation: fadeIn 0.5s ease;
     }
 
     .modal-content {
@@ -146,13 +180,39 @@
       padding: 1rem;
       border-radius: 10px;
       text-align: center;
+      animation: popIn 0.5s ease forwards;
+      transform-origin: center bottom;
     }
 
-    .modal img {
-      max-width: 100%;
-      max-height: 300px;
-      border-radius: 8px;
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
+
+
+.modal img {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  animation: imagePop 0.4s ease forwards;
+}
+
+@keyframes imagePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
     .modal p {
       color: var(--accent-color);
@@ -195,48 +255,43 @@
     .modal-buttons button:hover {
       background-color: var(--accent-color);
     }
-h1 {
-  font-size: 3rem;
-  color: var(--accent-color);
-  font-family: 'Playfair Display', serif;
-  font-weight: 800; /* Makes it bold */
-  margin-bottom: 0.5rem;
-}
 
-    .open-modal-btn {
-      background-color: var(--accent-color);
-      color: var(--bg-color);
-      padding: 0.8rem 1.2rem;
-      font-weight: bold;
-      border-radius: 8px;
-      margin-top: 1rem;
-      border: none;
-      cursor: pointer;
-      font-size: 1.1rem;
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
     }
 
-    .open-modal-btn:hover {
-      background-color: var(--primary-color);
-      color: var(--text-color);
+    @keyframes slideInTop {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
   <header>
     <img src="Funoon Logo.png" alt="Funoon Logo" class="logo" />
-   <nav>
-  <a href="index.html">Home</a> 
-  <a href="about.html">About</a> 
-  <a href="services.html">Services</a> 
-  <a href="portfolio.html">Portfolio</a> 
-  <a href="reviews.html">Reviews</a>
-</nav>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="reviews.html">Reviews</a>
+    </nav>
   </header>
 
   <main>
     <h1>Our Services</h1>
 
-    <!-- 3D Printing Section -->
     <div class="section-title">3D Printing Customization</div>
     <section class="service">
       <p>Explore our custom 3D printed models — crafted with precision and tailored to your ideas! From keychains and figurines to unique prototypes, each piece is designed to meet your exact specifications with high-quality materials and finishes.</p>
@@ -244,7 +299,6 @@ h1 {
       <button class="open-modal-btn" onclick="openModal()">View Products</button>
     </section>
 
-    <!-- Modal -->
     <div id="productModal" class="modal">
       <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
@@ -258,7 +312,6 @@ h1 {
       </div>
     </div>
 
-    <!-- Other Services -->
     <div class="section-title">Corporate Logo T-Shirts & Gifts</div>
     <section class="service">
       <h2>Corporate Logo T-Shirts</h2>
@@ -270,38 +323,14 @@ h1 {
     </section>
 
     <div class="section-title">🛠️ Fabrication & Print Solutions</div>
-    <section class="service">
-      <h2>Forex Notice Boards</h2>
-      <p>Lightweight yet durable printed boards perfect for offices, schools, or exhibitions.</p>
-    </section>
-    <section class="service">
-      <h2>Stickers</h2>
-      <p>Custom sticker printing for branding, promotions, or events. Weather-resistant and vibrant.</p>
-    </section>
-    <section class="service">
-      <h2>Perfume Boxes & Product Packaging</h2>
-      <p>Elegant, stylish packaging solutions tailored to your product needs.</p>
-    </section>
-    <section class="service">
-      <h2>Paper Bags & Any Type of Boxes</h2>
-      <p>Eco-friendly and versatile packaging options for retail or corporate gifting.</p>
-    </section>
-    <section class="service">
-      <h2>Acrylic Cut Numbers & Letters</h2>
-      <p>Perfect for signage, displays, and decor with a sleek modern look.</p>
-    </section>
-    <section class="service">
-      <h2>Glass Frosting with Print</h2>
-      <p>Enhance privacy and style with custom logos or designs on glass surfaces.</p>
-    </section>
-    <section class="service">
-      <h2>Metal Name Plates</h2>
-      <p>Durable and elegant plates ideal for homes, offices, and institutions.</p>
-    </section>
-    <section class="service">
-      <h2>Business Cards</h2>
-      <p>Professional and custom-designed business cards for your brand or personal use.</p>
-    </section>
+    <section class="service"><h2>Forex Notice Boards</h2><p>Lightweight yet durable printed boards perfect for offices, schools, or exhibitions.</p></section>
+    <section class="service"><h2>Stickers</h2><p>Custom sticker printing for branding, promotions, or events. Weather-resistant and vibrant.</p></section>
+    <section class="service"><h2>Perfume Boxes & Product Packaging</h2><p>Elegant, stylish packaging solutions tailored to your product needs.</p></section>
+    <section class="service"><h2>Paper Bags & Any Type of Boxes</h2><p>Eco-friendly and versatile packaging options for retail or corporate gifting.</p></section>
+    <section class="service"><h2>Acrylic Cut Numbers & Letters</h2><p>Perfect for signage, displays, and decor with a sleek modern look.</p></section>
+    <section class="service"><h2>Glass Frosting with Print</h2><p>Enhance privacy and style with custom logos or designs on glass surfaces.</p></section>
+    <section class="service"><h2>Metal Name Plates</h2><p>Durable and elegant plates ideal for homes, offices, and institutions.</p></section>
+    <section class="service"><h2>Business Cards</h2><p>Professional and custom-designed business cards for your brand or personal use.</p></section>
   </main>
 
   <footer>
@@ -343,12 +372,25 @@ h1 {
       document.getElementById('productModal').style.display = 'none';
     }
 
-    function showProduct(index) {
-      const product = products[index];
-      document.getElementById('productImg').src = product.img;
-      document.getElementById('productName').textContent = product.name;
-      document.getElementById('productLink').href = product.link;
-    }
+   function showProduct(index) {
+  const product = products[index];
+  const img = document.getElementById('productImg');
+
+  // Remove animation to restart it
+  img.style.animation = 'none';
+
+  // Trigger reflow so animation can restart
+  void img.offsetWidth;
+
+  // Update image and other details
+  img.src = product.img;
+  document.getElementById('productName').textContent = product.name;
+  document.getElementById('productLink').href = product.link;
+
+  // Apply animation again
+  img.style.animation = 'imagePop 0.4s ease forwards';
+}
+
 
     function nextProduct() {
       currentIndex = (currentIndex + 1) % products.length;
@@ -359,6 +401,21 @@ h1 {
       currentIndex = (currentIndex - 1 + products.length) % products.length;
       showProduct(currentIndex);
     }
+
+    // Animate service sections on scroll
+    const serviceSections = document.querySelectorAll(".service");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    serviceSections.forEach((section) => observer.observe(section));
   </script>
 </body>
 </html>

@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@600;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-       --bg-color: #1e1a16;
+      --bg-color: #1e1a16;
       --primary-color: #a67c52;
       --text-color: #f3f3f3;
       --accent-color: #e2b07e;
@@ -24,6 +24,17 @@
       color: var(--text-color);
     }
 
+    @keyframes headerFadeSlide {
+      0% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     header {
       display: flex;
       flex-wrap: wrap;
@@ -32,10 +43,14 @@
       padding: 1rem 2rem;
       background-color: var(--header-bg);
       border-bottom: 2px solid var(--accent-color);
+      position: relative;
+      z-index: 10;
+      animation: headerFadeSlide 0.8s ease forwards;
     }
 
     .logo {
       height: 100px;
+      max-width: 100%;
       object-fit: contain;
     }
 
@@ -81,69 +96,84 @@
     }
 
     h1 {
-      font-size: 3rem;
-      color: var(--accent-color);
-      font-family: 'Playfair Display', serif;
-      margin-bottom: 1rem;
-    }
+  font-size: 3rem;
+  color: var(--accent-color);
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 0.5rem;
+  animation: fadeInUp 0.8s ease forwards;
+}
 
-    .subtitle {
-      font-size: 1.2rem;
-      color: var(--primary-color);
-      margin-bottom: 3rem;
-      font-style: italic;
-    }
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  margin-bottom: 2.5rem;
+  font-style: italic;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: 0.3s;
+  animation-fill-mode: forwards;
+}
 
-    .reviews-gallery {
+
+    .gallery {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 2rem;
+      gap: 1rem;
     }
 
-    .review-card {
-      width: 280px;
-      aspect-ratio: 9 / 16;
+    @keyframes fadeScaleIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    .gallery-item {
       background-color: var(--card-bg);
-      border-radius: 12px;
+      border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 0 10px var(--card-shadow);
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
+      width: 280px;
+      height: 500px;
       text-align: center;
+      opacity: 0;
+      animation: fadeScaleIn 0.5s ease forwards;
+      animation-delay: calc(var(--order) * 0.1s);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      cursor: pointer;
     }
 
-    .reviewer-pic {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
+    .gallery-item:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 30px var(--accent-color);
+    }
+
+    .gallery-item:active {
+      animation: pop 0.3s ease;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      margin-bottom: 0.5rem;
-      border: 2px solid var(--accent-color);
+      display: block;
+      border-radius: 12px;
     }
 
-    .review-card h3 {
-      font-size: 1rem;
-      margin: 0.2rem 0;
-      color: var(--accent-color);
-    }
-
-    .review-card p {
-      font-size: 0.9rem;
-      color: var(--text-color);
-      margin: 0.5rem 0;
-    }
-
-    .review-screenshot,
-    .review-video {
-      width: 260px;
-      aspect-ratio: 9 / 16;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-top: 0.5rem;
+    .gallery-item p {
+      display: none;
     }
 
     footer {
@@ -156,6 +186,17 @@
       margin-top: 3rem;
       color: var(--text-color);
     }
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
   </style>
 </head>
 <body>
@@ -166,26 +207,32 @@
       <a href="about.html">About</a>
       <a href="services.html">Services</a>
       <a href="portfolio.html">Portfolio</a>
-      <a href="contact.html">Reviews</a>
+      <a href="reviews.html">Reviews</a>
     </nav>
   </header>
 
   <main>
-    <h1>Customer Reviews</h1>
-    <p class="subtitle">Real feedback from happy clients – scroll through their words and stories.</p>
-    <div class="reviews-gallery">
-      <div class="review-card">
-        <img src="screenshot1.jpg" alt="Review Screenshot" class="review-screenshot" />
+    <h1>What Our Customers Say</h1>
+    <p class="subtitle">Discover what makes us their favorite – in their own words.</p>
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="screenshot1.jpg" alt="Customer Story Review 1" />
       </div>
-      <div class="reviews-gallery">
-      <div class="review-card">
-        <img src="screenshot2.jpg" alt="Review Screenshot" class="review-screenshot" />
-      </div>  
+      <div class="gallery-item">
+        <img src="screenshot2.jpg" alt="Customer Story Review 2" />
+      </div>
+     
     </div>
   </main>
 
   <footer>
     <p>&copy; 2025 Funoon FZC. All rights reserved.</p>
   </footer>
+
+  <script>
+    document.querySelectorAll('.gallery-item').forEach((item, index) => {
+      item.style.setProperty('--order', index);
+    });
+  </script>
 </body>
 </html>
