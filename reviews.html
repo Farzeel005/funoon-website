@@ -12,7 +12,6 @@
       --text-color: #f3f3f3;
       --accent-color: #e2b07e;
       --header-bg: #3a2a22;
-      --header-text: #f3f3f3;
       --card-bg: #2c211b;
       --card-shadow: rgba(166, 124, 82, 0.3);
     }
@@ -32,13 +31,10 @@
       padding: 1rem 2rem;
       background-color: var(--header-bg);
       border-bottom: 2px solid var(--accent-color);
-      position: relative;
-      z-index: 10;
     }
 
     .logo {
       height: 100px;
-      max-width: 100%;
       object-fit: contain;
     }
 
@@ -56,7 +52,6 @@
       text-decoration: none;
       font-weight: 500;
       transition: color 0.3s;
-      font-family: 'Courier New', Courier, monospace;
       font-size: 20px;
     }
 
@@ -79,7 +74,7 @@
 
     main {
       padding: 4rem 2rem;
-      max-width: 800px;
+      max-width: 1000px;
       margin: 0 auto;
       text-align: center;
     }
@@ -88,66 +83,66 @@
       font-size: 3rem;
       color: var(--accent-color);
       font-family: 'Playfair Display', serif;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
 
     .subtitle {
       font-size: 1.2rem;
       color: var(--primary-color);
-      margin-bottom: 2.5rem;
+      margin-bottom: 3rem;
       font-style: italic;
     }
 
-    .reviews {
+    .reviews-gallery {
       display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
     }
 
     .review-card {
+      width: 280px;
+      aspect-ratio: 9 / 16;
       background-color: var(--card-bg);
-      border-radius: 8px;
+      border-radius: 12px;
+      overflow: hidden;
       box-shadow: 0 0 10px var(--card-shadow);
-      padding: 1.5rem 2rem;
-      text-align: left;
-      font-size: 1rem;
-      line-height: 1.4;
-      font-style: normal;
-      position: relative;
-      transition: box-shadow 0.3s ease;
+      padding: 1rem;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 1.5rem;
+      justify-content: flex-start;
+      text-align: center;
     }
 
-    .review-card:hover {
-      box-shadow: 0 8px 20px var(--accent-color);
-    }
-
-    .reviewer-photo {
-      flex-shrink: 0;
-      width: 60px;
-      height: 60px;
+    .reviewer-pic {
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       object-fit: cover;
-      background-color: #4a3a28; /* fallback bg in case no image */
+      margin-bottom: 0.5rem;
       border: 2px solid var(--accent-color);
     }
 
-    .review-content {
-      flex-grow: 1;
-    }
-
-    .reviewer-name {
-      font-weight: 700;
+    .review-card h3 {
+      font-size: 1rem;
+      margin: 0.2rem 0;
       color: var(--accent-color);
-      margin-bottom: 0.3rem;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
     }
 
-    .review-text {
+    .review-card p {
+      font-size: 0.9rem;
       color: var(--text-color);
+      margin: 0.5rem 0;
+    }
+
+    .review-screenshot,
+    .review-video {
+      width: 260px;
+      aspect-ratio: 9 / 16;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 0.5rem;
     }
 
     footer {
@@ -170,49 +165,26 @@
       <a href="about.html">About</a>
       <a href="services.html">Services</a>
       <a href="portfolio.html">Portfolio</a>
-      <a href="reviews.html">Reviews</a>
+      <a href="contact.html">Reviews</a>
     </nav>
   </header>
 
   <main>
     <h1>Customer Reviews</h1>
-    <p class="subtitle">What our customers say about us.</p>
-    <div class="reviews">
+    <p class="subtitle">Real feedback from happy clients – scroll through their words and stories.</p>
+    <div class="reviews-gallery">
       <div class="review-card">
-        <img src="reviewer1.jpg" alt="Aisha K." class="reviewer-photo" />
-        <div class="review-content">
-          <div class="reviewer-name">Aisha K.</div>
-          <div class="review-text">“Amazing quality and fast delivery! The custom keychain I ordered looks perfect.”</div>
-        </div>
+        <img src="screenshot1.jpg" alt="Review Screenshot" class="review-screenshot" />
       </div>
       <div class="review-card">
-        <img src="reviewer2.jpg" alt="Mohammed R." class="reviewer-photo" />
-        <div class="review-content">
-          <div class="reviewer-name">Mohammed R.</div>
-          <div class="review-text">“Great attention to detail. Highly recommend Funoon for personalized gifts.”</div>
-        </div>
-      </div>
-      <div class="review-card">
-        <img src="reviewer3.jpg" alt="Sara L." class="reviewer-photo" />
-        <div class="review-content">
-          <div class="reviewer-name">Sara L.</div>
-          <div class="review-text">“Very professional service and excellent product. Will order again soon!”</div>
-        </div>
-      </div>
-      <div class="review-card">
-        <img src="reviewer4.jpg" alt="Jafar M." class="reviewer-photo" />
-        <div class="review-content">
-          <div class="reviewer-name">Jafar M.</div>
-          <div class="review-text">“The car silhouette design exceeded my expectations. Fantastic work.”</div>
-        </div>
-      </div>
-      <div class="review-card">
-        <img src="reviewer5.jpg" alt="Nadia S." class="reviewer-photo" />
-        <div class="review-content">
-          <div class="reviewer-name">Nadia S.</div>
-          <div class="review-text">“Highly responsive and great customer care. Love my new custom stickers!”</div>
-        </div>
-      </div>
+        <img src="reviewer.jpg" alt="Ali" class="reviewer-pic" />
+        <h3>Ali</h3>
+        <p>Highly recommended!</p>
+        <video class="review-video" controls>
+          <source src="review2.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>  
     </div>
   </main>
 
