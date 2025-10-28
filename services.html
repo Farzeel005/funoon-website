@@ -510,7 +510,7 @@ font-weight: bold;
     <a href="products.html">Products</a>
     <a href="contact.html">Contact</a>
   </div>
-  <div class="hamburger" onclick="toggleMenu(this)">
+  <div class="hamburger" onclick="toggleMenu()">
     <div></div><div></div><div></div>
   </div>
   <div class="menu mobile-menu" id="mobileMenu">
@@ -591,15 +591,11 @@ font-weight: bold;
     <a href="https://instagram.com/funoonfzc" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
         <i class="fab fa-instagram"></i>
     </a>
-    <a href="https://facebook.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+    <a href="https://www.facebook.com/profile.php?id=61577902016847" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
         <i class="fab fa-facebook-f"></i>
     </a>
-    <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+    <a href="https://www.linkedin.com/company/funoon-fzc" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
         <i class="fab fa-linkedin-in"></i>
-    </a>
-    <a href="https://twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-        <i class="fab fa-twitter"></i>
-    </a>
 </div>
     </div>
     <div class="footer-column">
@@ -644,21 +640,6 @@ font-weight: bold;
       logo.style.top = "0";
     }, 200); // delay to show fade-in effect
 
-    // Hamburger toggle for mobile menu
-    function toggleMenu() {
-      hamburger.classList.toggle("active");
-      mobileMenu.classList.toggle("show");
-    }
-
-    function closeMenu() {
-      hamburger.classList.remove("active");
-      mobileMenu.classList.remove("show");
-    }
-
-    // Attach events
-    hamburger.addEventListener("click", toggleMenu);
-    closeBtn.addEventListener("click", closeMenu);
-
     // Close mobile menu when a link is clicked
     mobileMenu.querySelectorAll("a").forEach(link => {
       link.addEventListener("click", closeMenu);
@@ -675,6 +656,19 @@ font-weight: bold;
       }, 400 + index * 100);
     });
   });
+
+// Hamburger toggle for mobile menu
+function toggleMenu() {
+  document.querySelector(".hamburger").classList.toggle("active");
+  document.getElementById("mobileMenu").classList.toggle("show");
+}
+
+function closeMenu() {
+  document.querySelector(".hamburger").classList.remove("active");
+  document.getElementById("mobileMenu").classList.remove("show");
+}
+window.toggleMenu = toggleMenu;
+window.closeMenu = closeMenu;
 
 // =======================
 // Services Section Reveal

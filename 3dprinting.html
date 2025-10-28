@@ -582,21 +582,17 @@ Your browser does not support the video tag.
       </div>
       <div class="footer-social">
         <h3>Connect With Us</h3>
-        <div class="social-icons">
-          <a href="https://instagram.com/funoonfzc" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a href="https://facebook.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-          <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-          <a href="https://twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-            <i class="fab fa-twitter"></i>
-          </a>
-        </div>
-      </div>
+  <div class="social-icons">
+    <a href="https://instagram.com/funoonfzc" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=61577902016847" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <i class="fab fa-facebook-f"></i>
+    </a>
+    <a href="https://www.linkedin.com/company/funoon-fzc" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <i class="fab fa-linkedin-in"></i>
+</div>
+    </div>
       <div class="footer-column">
         <h3>Contact</h3>
         <p><a href="mailto:cs@funoonfzc.com" aria-label="Email"><i class="fas fa-envelope"></i> cs@funoonfzc.com</a></p>
@@ -638,21 +634,21 @@ document.addEventListener("DOMContentLoaded", () => {
     logo.style.top = "0";
   }, 200);
 
-  // Hamburger menu
-  function toggleMenu() {
-    hamburger.classList.toggle("active");
-    mobileMenu.classList.toggle("show");
-  }
-  function closeMenu() {
-    hamburger.classList.remove("active");
-    mobileMenu.classList.remove("show");
-  }
-  hamburger.addEventListener("click", toggleMenu);
   closeBtn.addEventListener("click", closeMenu);
   mobileMenu.querySelectorAll("a").forEach(link => {
     link.addEventListener("click", closeMenu);
   });
 
+  // Fade-in menu links
+  menuLinks.forEach((link, index) => {
+    link.style.opacity = "0";
+    link.style.transform = "translateY(-10px)";
+    setTimeout(() => {
+      link.style.transition = "all 0.6s ease-out";
+      link.style.opacity = "1";
+      link.style.transform = "translateY(0)";
+    }, 400 + index * 100);
+  });
   // Fade-in menu links
   menuLinks.forEach((link, index) => {
     link.style.opacity = "0";
@@ -682,6 +678,18 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(el);
   });
 });
+
+// Hamburger menu
+function toggleMenu() {
+  document.querySelector(".hamburger").classList.toggle("active");
+  document.getElementById("mobileMenu").classList.toggle("show");
+}
+function closeMenu() {
+  document.querySelector(".hamburger").classList.remove("active");
+  document.getElementById("mobileMenu").classList.remove("show");
+}
+window.toggleMenu = toggleMenu;
+window.closeMenu = closeMenu;
 
 // Optimized Three.js Background
 (function () {
