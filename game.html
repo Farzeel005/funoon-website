@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Funoon 3D AI Game</title>
+<link rel="icon" type="image/png" href="funoonlogo1.png">
+
+<style>
+/* === Fonts (replace local font files as needed) === */
+@font-face { font-family: 'Overcame1'; src: url('./fonts/OvercameDemoBold.woff2') format('woff2'); font-weight:600; }
+@font-face { font-family: 'NumberFont'; src: url('./fonts/Galaksinos.woff2') format('woff2'); }
+
+/* === Base === */
+:root{
+  --bg1: #2e2e2e;
+  --bg2: #0d0d0d;
+  --accent: #938875;
+  --glass: rgba(255,255,255,0.06);
+  --funoon-green: #00ff7f;
+  --muted: rgba(255,255,255,0.75);
+}
+*{box-sizing:border-box}
+html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+body{
+  background: radial-gradient(circle at top center, var(--bg1), var(--bg2));
+  color:#fff;
+}
+
+/* Canvas (fills viewport) */
+canvas { display:block; width:100vw; height:100vh; }
+
+/* Score badge */
+#score {
+  position: fixed;
+  left: 20px;
+  top: 18px;
+  z-index: 30;
+  background: rgba(0,0,0,0.35);
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight:700;
+  color: var(--muted);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+
+/* OVERLAYS (Intro & GameOver) */
+.overlay, #gameOver {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: linear-gradient(180deg, rgba(4,4,4,0.82), rgba(4,4,4,0.9));
+  padding: 24px;
+}
+.overlay-inner, .gameover-inner {
+  width: min(920px, 96%);
+  max-width: 1100px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15));
+  border-radius: 18px;
+  padding: 28px;
+  display:flex;
+  gap: 24px;
+  align-items:center;
+  justify-content:space-between;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+}
+
+/* Left: branding/instructions */
+.brand-block { flex: 1 1 420px; min-width:260px; color:#f5f5f5; }
+.brand-block img { width:120px; display:block; margin-bottom:14px; }
+.brand-block h1 { margin:0; font-family: 'Overcame1', sans-serif; font-size:32px; color: #fff; letter-spacing: -0.5px; }
+.brand-block p { margin:14px 0; color: #ddd; line-height:1.4; font-size:15px; }
+
+/* Right: controls / leaderboard */
+.right-block { width: 360px; min-width:250px; display:flex; flex-direction:column; gap:14px; align-items:center; }
+
+/* Buttons */
+.btn {
+  display:inline-block;
+  padding: 12px 20px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, var(--accent), #fff);
+  border: none;
+  font-weight:700;
+  color:#111;
+  cursor:pointer;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.5);
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+.btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(93, 255, 239, 0.6); }
+
+/* Leaderboard card */
+.leaderboard {
+  width:100%;
+  background: rgba(0,0,0,0.28);
+  border-radius: 12px;
+  padding: 12px 14px;
+  text-align:left;
+  color:#fff;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.leaderboard h3 { margin:0 0 8px 0; color: var(--funoon-green); font-size:18px; }
+.leaderboard ol { margin:0; padding:0 0 0 18px; color:#ddd; }
+
+/* GameOver specifics */
+#gameOver { display:none; }
+
+.gameover-inner .brand-block { text-align:center; }
+.gameover-inner .brand-block h1 { font-size:28px; color: #ffb4a2; }
+.gameover-inner .brand-block p { font-size:20px; color:#fff; }
+
+/* Touch controls (mobile) */
+#touch-controls {
+  position: fixed;
+  z-index: 45;
+  left: 0; right: 0; bottom: 12px;
+  display:flex; justify-content:center; gap:14px;
+  pointer-events:none; /* allow canvas touches except buttons */
+}
+.touch-btn {
+  pointer-events: auto;
+  width:72px; height:72px; border-radius:18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.2));
+  border: 1px solid rgba(255,255,255,0.05);
+  color:#fff; font-weight:700; font-size:20px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  user-select:none;
+}
+.touch-btn:active{ transform:scale(.98); }
+
+/* Small screens */
+@media (max-width: 860px) {
+  .overlay-inner, .gameover-inner { flex-direction: column; align-items:center; padding:18px; gap:16px; }
+  .right-block { width:100%; }
+  .brand-block p { font-size:14px; text-align:center; }
+  .touch-btn { width:64px; height:64px; }
+  #score { left: 12px; top: 10px; font-size:18px; padding:8px 10px; }
+}
+
+/* Very small phones */
+@media (max-width:420px){
+  .touch-btn { width:56px; height:56px; font-size:18px; }
+  .btn { padding:10px 16px; font-size:15px; }
+}
+#touch-controls {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none; /* allow canvas touches except buttons */
+  touch-action: none;
+}
+
+.touch-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.touch-btn {
+  pointer-events: auto;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.2));
+  border: 1px solid rgba(255,255,255,0.05);
+  color: #fff;
+  font-weight: 700;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  user-select: none;
+  transition: transform 0.1s;
+}
+.touch-btn:active { transform: scale(0.95); }
+
+/* Small screens */
+@media (max-width: 420px) {
+  .touch-btn {
+    width: 56px;
+    height: 56px;
+    font-size: 18px;
+  }
+}
+/* Mobile overlays adjustments */
+@media (max-width: 860px) {
+  /* Make inner overlays vertical for mobile */
+  .overlay-inner, .gameover-inner {
+    flex-direction: column;
+    align-items: center;
+    padding: 18px;
+    gap: 16px;
+    max-width: 95%;       /* smaller width on mobile */
+    width: auto;
+  }
+
+  /* Brand block */
+  .brand-block {
+    width: 100%;
+    text-align: center;
+  }
+  .brand-block img {
+    width: 100px;          /* smaller logo */
+    margin-bottom: 10px;
+  }
+  .brand-block h1 {
+    font-size: 24px;       /* smaller title */
+  }
+  .brand-block p {
+    font-size: 14px;       /* readable instructions */
+    line-height: 1.4;
+  }
+
+  /* Right block (buttons + leaderboard) */
+  .right-block {
+    width: 100%;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Buttons */
+  .btn {
+    width: 100%;
+    max-width: 260px;
+    padding: 10px 16px;
+    font-size: 16px;
+  }
+
+  /* Leaderboard */
+  .leaderboard {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  /* Game Over text */
+  .gameover-inner .brand-block h1 {
+    font-size: 22px;
+  }
+  .gameover-inner .brand-block p {
+    font-size: 16px;
+  }
+
+  /* Scrollable if content taller than screen */
+  .overlay-inner, .gameover-inner {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+</style>
+</head>
+
+<body>
+  <!-- Score -->
+  <div id="score">Score: 0</div>
+
+  <!-- Intro overlay -->
+  <div id="overlay" class="overlay">
+    <div class="overlay-inner">
+      <div class="brand-block">
+        <img src="funoonlogo.png" alt="Funoon Logo" id="logoImg">
+        <h1>Funoon Cube Chase</h1>
+        <p>
+           <p>
+  A <strong>3D survival game</strong> with a touch of <strong>AI</strong> — red cubes chase you using
+  simple artificial intelligence.<br><br>
+  Use <strong>W / A / S / D</strong> or <strong>arrow keys</strong> on desktop.
+  On mobile, use the <strong>on-screen buttons or swipe to move.</strong><br><br>
+  <strong>Avoid red cubes</strong> and <strong>don’t fall off the platform.</strong><br>
+  Score rises over time — the game <strong>gets harder as you play longer and with each replay!</strong> 
+  Try to make the Top 5!
+</p>
+
+        </p>
+      </div>
+
+      <div class="right-block">
+        <button id="startBtn" class="btn">Start Game</button>
+        <button id="homeBtn" class="btn" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.08);">Go to Website</button>
+
+        <div class="leaderboard" aria-live="polite">
+          <h3>🏆 Leaderboard (Top 5)</h3>
+          <ol id="scoresList"><li>—</li></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Over overlay -->
+  <div id="gameOver" class="overlay">
+    <div class="gameover-inner">
+      <div class="brand-block">
+        <img src="funoonlogo.png" alt="Funoon Logo">
+        <h1 id="gameOverTitle">Game Over</h1>
+        <p id="finalScoreText">Your Score: 0</p>
+      </div>
+
+      <div class="right-block">
+        <button id="replayBtn" class="btn">Play Again</button>
+        <button id="homeBtnOver" class="btn" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.08);">Go to Website</button>
+
+        <div class="leaderboard">
+          <h3>🏆 Leaderboard (Top 5)</h3>
+          <ol id="scoresListOver"><li>—</li></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Touch controls (mobile) -->
+<!-- Touch controls (mobile) -->
+<div id="touch-controls" aria-hidden="false" role="application">
+  <div class="touch-row">
+    <div class="touch-btn" id="btn-up">▲</div>
+  </div>
+  <div class="touch-row">
+    <div class="touch-btn" id="btn-left">◀</div>
+    <div class="touch-btn" id="btn-down">▼</div>
+    <div class="touch-btn" id="btn-right">▶</div>
+  </div>
+</div>
+
+  <!-- Three.js renderer will append the canvas here -->
+<script type="module">
+/* ======================
+   Funoon Cube Chase Game
+   - Mobile responsive canvas
+   - On-screen touch buttons + swipe
+   - Leaderboard (localStorage) top 5
+   ====================== */
+let replayCount = 0;
+
+import * as THREE from 'https://unpkg.com/three@0.155.0/build/three.module.js';
+
+/* ---------- Scene & Renderer ---------- */
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x2f2f3a);
+
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 5, 10);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+/* ---------- Floor (checker) ---------- */
+const floorGeometry = new THREE.PlaneGeometry(50, 50);
+const floorCanvas = document.createElement('canvas');
+floorCanvas.width = floorCanvas.height = 512;
+const ctx = floorCanvas.getContext('2d');
+const tile = 64;
+for (let y = 0; y < 512; y += tile) {
+  for (let x = 0; x < 512; x += tile) {
+    ctx.fillStyle = ((x + y) / tile) % 2 === 0 ? '#24242a' : '#1a1a1f';
+    ctx.fillRect(x, y, tile, tile);
+  }
+}
+const floorTexture = new THREE.CanvasTexture(floorCanvas);
+const floor = new THREE.Mesh(floorGeometry, new THREE.MeshStandardMaterial({ map: floorTexture }));
+floor.rotation.x = -Math.PI / 2;
+floor.receiveShadow = true;
+scene.add(floor);
+
+/* ---------- Lights ---------- */
+const ambient = new THREE.AmbientLight(0xffffff, 0.45);
+scene.add(ambient);
+const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+dirLight.position.set(5, 12, 8);
+dirLight.castShadow = true;
+dirLight.shadow.mapSize.set(1024, 1024);
+scene.add(dirLight);
+
+/* ---------- Player ---------- */
+const playerMat = new THREE.MeshStandardMaterial({ color: 0x00ff7f, metalness: 0.4, roughness: 0.5 });
+const playerGeom = new THREE.BoxGeometry(1, 1, 1);
+const player = new THREE.Mesh(playerGeom, playerMat);
+player.castShadow = true;
+player.position.set(0, 0.5, 0);
+scene.add(player);
+
+/* ---------- AI cubes ---------- */
+const aiCubes = [];
+const initialAICount = 6;
+function createInitialAICubes() {
+  for (let i = 0; i < initialAICount; i++) {
+    spawnNewAICubeRandomPosInside();
+  }
+}
+function spawnNewAICubeRandomPosInside() {
+  let cube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({ color: 0xff3b3b }));
+  
+  // Keep generating until cube is at least 8 units away from player
+  let posOK = false;
+  while (!posOK) {
+    const x = Math.random() * 40 - 20;
+    const z = Math.random() * 40 - 20;
+    const dist = Math.hypot(player.position.x - x, player.position.z - z);
+    if (dist >= 8) { // minimum safe distance
+      cube.position.set(x, 0.5, z);
+      posOK = true;
+    }
+  }
+  
+  cube.castShadow = true;
+  scene.add(cube);
+  aiCubes.push(cube);
+}
+
+function spawnNewAICubeAtEdge() {
+  const cube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({ color: 0xff3b3b }));
+  const edge = Math.floor(Math.random() * 4);
+  switch (edge) {
+    case 0: cube.position.set(-25, 0.5, Math.random() * 50 - 25); break;
+    case 1: cube.position.set(25, 0.5, Math.random() * 50 - 25); break;
+    case 2: cube.position.set(Math.random() * 50 - 25, 0.5, -25); break;
+    case 3: cube.position.set(Math.random() * 50 - 25, 0.5, 25); break;
+  }
+  cube.castShadow = true;
+  scene.add(cube);
+  aiCubes.push(cube);
+}
+
+/* ---------- Input handling (keyboard + touch + swipe) ---------- */
+const keys = { w: false, a: false, s: false, d: false, ArrowUp: false, ArrowLeft: false, ArrowDown: false, ArrowRight: false };
+let touchState = { left: false, right: false, up: false, down: false }; // add down
+
+window.addEventListener('keydown', (e) => {
+  keys[e.key] = true;
+});
+window.addEventListener('keyup', (e) => {
+  keys[e.key] = false;
+});
+
+/* Touch buttons */
+const btnLeft = document.getElementById('btn-left');
+const btnRight = document.getElementById('btn-right');
+const btnUp = document.getElementById('btn-up');
+const btnDown = document.getElementById('btn-down');
+
+
+
+function bindTouchButton(el, onStart, onEnd) {
+  el.addEventListener('touchstart', (ev) => { ev.preventDefault(); onStart(); }, { passive: false });
+  el.addEventListener('mousedown', (ev) => { ev.preventDefault(); onStart(); });
+  el.addEventListener('touchend', (ev) => { ev.preventDefault(); onEnd(); }, { passive: false });
+  el.addEventListener('mouseup', (ev) => { ev.preventDefault(); onEnd(); });
+  el.addEventListener('mouseleave', (ev) => { ev.preventDefault(); onEnd(); });
+}
+bindTouchButton(btnUp, () => touchState.up = true, () => touchState.up = false);
+bindTouchButton(btnDown, () => touchState.down = true, () => touchState.down = false);
+bindTouchButton(btnLeft, () => touchState.left = true, () => touchState.left = false);
+bindTouchButton(btnRight, () => touchState.right = true, () => touchState.right = false);
+
+
+
+/* Swipe handling (quick directional swipe) */
+let swipeStart = null;
+const SWIPE_MIN = 30; // pixels
+renderer.domElement.addEventListener('touchstart', (e) => {
+  if (e.touches && e.touches[0]) swipeStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() };
+}, { passive: true });
+renderer.domElement.addEventListener('touchend', (e) => {
+  if (!swipeStart) return;
+  const touch = (e.changedTouches && e.changedTouches[0]) || null;
+  if (!touch) { swipeStart = null; return; }
+  const dx = touch.clientX - swipeStart.x;
+  const dy = touch.clientY - swipeStart.y;
+  const dt = Date.now() - swipeStart.t;
+  swipeStart = null;
+  if (Math.abs(dx) < SWIPE_MIN && Math.abs(dy) < SWIPE_MIN) return;
+  if (Math.abs(dx) > Math.abs(dy)) {
+    // horizontal swipe
+    if (dx > 0) { // right
+      // quick pulse right control for 120ms
+      touchState.right = true; setTimeout(() => touchState.right = false, 120);
+    } else {
+      touchState.left = true; setTimeout(() => touchState.left = false, 120);
+    }
+  } else {
+    // vertical swipe
+    if (dy < 0) { // swipe up (towards top)
+      touchState.up = true; setTimeout(() => touchState.up = false, 120);
+    } // we don't use down
+  }
+}, { passive: true });
+
+/* ---------- Game state & reset ---------- */
+let score = 0;
+let lastSpawnTime = 0;
+let running = false;
+let gameOverFlag = false;
+const scoreElement = document.getElementById('score');
+
+function clearAICubes() {
+  while (aiCubes.length) {
+    const c = aiCubes.pop();
+    scene.remove(c);
+  }
+}
+
+function resetGame() {
+  // remove old cubes
+  clearAICubes();
+  // reset player pos
+  player.position.set(0, 0.5, 0);
+  // reset score
+  score = 0;
+  lastSpawnTime = 0;
+  // reset flags
+  gameOverFlag = false;
+  // clear inputs
+  for (const k in keys) keys[k] = false;
+  touchState.left = touchState.right = touchState.up = false;
+  // create starting cubes
+  for (let i = 0; i < initialAICount; i++) spawnNewAICubeRandomPosInside();
+  // update UI
+  updateScoreUI();
+}
+
+/* ---------- Leaderboard (localStorage) ---------- */
+const LB_KEY = 'funoon_leaderboard_v1';
+function getLeaderboard() {
+  try {
+    const raw = localStorage.getItem(LB_KEY);
+    if (!raw) return [];
+    const arr = JSON.parse(raw);
+    if (!Array.isArray(arr)) return [];
+    return arr;
+  } catch { return []; }
+}
+function saveLeaderboard(arr) {
+  try { localStorage.setItem(LB_KEY, JSON.stringify(arr)); } catch {}
+}
+function updateLeaderboard(newScore) {
+  const scores = getLeaderboard();
+  scores.push(newScore);
+  scores.sort((a, b) => b - a);
+  if (scores.length > 5) scores.length = 5;
+  saveLeaderboard(scores);
+  renderLeaderboard();
+}
+function renderLeaderboard() {
+  const scores = getLeaderboard();
+  const list = document.getElementById('scoresList');
+  const listOver = document.getElementById('scoresListOver');
+  if (list) {
+    if (scores.length === 0) list.innerHTML = '<li>—</li>';
+    else list.innerHTML = scores.map((s, i) => `<li>#${i+1} — ${s}</li>`).join('');
+  }
+  if (listOver) {
+    if (scores.length === 0) listOver.innerHTML = '<li>—</li>';
+    else listOver.innerHTML = scores.map((s, i) => `<li>#${i+1} — ${s}</li>`).join('');
+  }
+}
+// initial render
+renderLeaderboard();
+
+/* ---------- Game logic: AI movement, collision, bounds ---------- */
+/* ---------- Player movement ---------- */
+function updatePlayer() {
+  let baseSpeed = 0.12 * Math.min(window.innerWidth / 800, 1.2); 
+  const maxSpeed = 0.18; // cap
+
+  let moveX = 0, moveZ = 0;
+
+  // keyboard
+  if (keys.w || keys.ArrowUp) moveZ -= 1;
+  if (keys.s || keys.ArrowDown) moveZ += 1;
+  if (keys.a || keys.ArrowLeft) moveX -= 1;
+  if (keys.d || keys.ArrowRight) moveX += 1;
+
+  // touch buttons
+  if (touchState.left) moveX -= 1;
+  if (touchState.right) moveX += 1;
+  if (touchState.up) moveZ -= 1;
+  if (touchState.down) moveZ += 1; // new
+
+  const len = Math.hypot(moveX, moveZ);
+  if (len > 0) {
+    moveX /= len; moveZ /= len;
+    let currentSpeed = Math.min(baseSpeed, maxSpeed);
+    player.position.x += moveX * currentSpeed;
+    player.position.z += moveZ * currentSpeed;
+  }
+}
+
+
+
+/* ---------- AI cubes ---------- */
+function updateAI() {
+  const minSpeed = 0.025;   // slowest
+  const maxSpeed = 0.030;   // hardest
+  const timeFactor = Math.min(score / 1000, 1); // ramps from 0 to 1 over time
+  const speed = minSpeed + (maxSpeed - minSpeed) * timeFactor; // interpolated speed
+
+  for (let i = 0; i < aiCubes.length; i++) {
+    const cube = aiCubes[i];
+    const dx = player.position.x - cube.position.x;
+    const dz = player.position.z - cube.position.z;
+    const dist = Math.hypot(dx, dz);
+    if (dist > 0.5) {
+      cube.position.x += (dx / dist) * speed;
+      cube.position.z += (dz / dist) * speed;
+    }
+    if (dist < 0.7) {
+      triggerGameOver('You were hit by a red cube!');
+      return;
+    }
+  }
+}
+
+
+
+
+function checkOutOfBounds() {
+  const half = 0.5;
+  if (player.position.x < -25 + half || player.position.x > 25 - half || player.position.z < -25 + half || player.position.z > 25 - half) {
+    triggerGameOver('You went out of bounds!');
+  }
+}
+
+/* spawn rate controller: spawn from edges more often as score increases */
+function maybeSpawn() {
+  const seconds = Math.floor(score / 10);
+  // Lower the factor to make cubes spawn more often
+const difficultyFactor = Math.max(1, 12 - Math.floor(score / 50));
+ if (seconds - lastSpawnTime > difficultyFactor) {
+    const spawnCount = Math.min(3, 1 + Math.floor(score / 100)); // 1–3 cubes based on score
+    for (let i = 0; i < spawnCount; i++) spawnNewAICubeAtEdge();
+    lastSpawnTime = seconds;
+}
+}
+
+
+
+/* ---------- Game Loop (with delta time) ---------- */
+let lastTime = performance.now();
+function animate(now = performance.now()) {
+  requestAnimationFrame(animate);
+  if (!running) return;
+  const dt = (now - lastTime) / 1000;
+  lastTime = now;
+
+  // update
+  updatePlayer();
+  updateAI();
+  checkOutOfBounds();
+  maybeSpawn();
+
+  // score increases with real time
+  score += dt * 10;
+  updateScoreUI();
+
+  // camera follow
+  const offset = new THREE.Vector3(0, 6, 12);
+  const cameraPos = player.position.clone().add(offset);
+  camera.position.lerp(cameraPos, 0.12);
+  camera.lookAt(player.position);
+
+  renderer.render(scene, camera);
+}
+
+/* ---------- Score UI ---------- */
+function updateScoreUI() {
+  scoreElement.innerText = `Score: ${Math.floor(score)}`;
+}
+
+/* ---------- Game over handling (UI + leaderboard) ---------- */
+const overlayEl = document.getElementById('overlay');
+const gameOverEl = document.getElementById('gameOver');
+const finalScoreText = document.getElementById('finalScoreText');
+function triggerGameOver(reason) {
+  if (gameOverFlag) return;
+  gameOverFlag = true;
+  running = false;
+  const final = Math.floor(score);
+  finalScoreText.innerText = `Your Score: ${final}`;
+  // update leaderboard
+  updateLeaderboard(final);
+  // show UI
+  overlayEl.style.display = 'none';
+  gameOverEl.style.display = 'flex';
+  // ensure leaderboard in overlay is updated
+  renderLeaderboard();
+}
+
+/* ---------- Buttons wiring ---------- */
+document.getElementById('startBtn').addEventListener('click', () => {
+  overlayEl.style.display = 'none';
+  resetGame();
+  running = true;
+  lastTime = performance.now();
+  requestAnimationFrame(animate);
+});
+document.getElementById('homeBtn').addEventListener('click', () => { window.location.href = 'index.html'; });
+document.getElementById('replayBtn').addEventListener('click', () => {
+  gameOverEl.style.display = 'none';
+  resetGame();
+  running = true;
+  lastTime = performance.now();
+  requestAnimationFrame(animate);
+});
+document.getElementById('homeBtnOver').addEventListener('click', () => { window.location.href = 'index.html'; });
+
+/* ---------- Resize ---------- */
+window.addEventListener('resize', () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+});
+
+/* ---------- Start-up initial state ---------- */
+resetGame();
+renderLeaderboard();
+/* show intro nicely */
+setTimeout(() => overlayEl.classList?.add('active'), 50);
+
+/* Improve visual on high-dpi */
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+</script>
+</body>
+</html>
