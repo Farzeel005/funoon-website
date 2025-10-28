@@ -251,7 +251,7 @@ model-viewer { width:100%; height:100%; background-color:transparent; object-fit
  .model-container { position: relative; top:0; left:50%; transform: translateX(-50%) scale(0.7); width:90%; height:40vh; margin-top:60px; z-index:5;  }
   .hint { top: calc(50% + 150px); font-size:1.2rem; margin-top: -20px; }
   .description { position: relative; top:0; left:50%; transform: translateX(-50%); width:90%; line-height:2rem; margin-top:60px; }
-  .step-title { font-size:2.5rem; margin-top:0px; line-height: normal;}
+  .step-title { font-size:2.5rem; margin-top:0px; line-height: normal; width: 80%;}
   .description p:first-child { font-size:1.2rem; }
   .description p:nth-child(2) { font-size:1.1rem; }
   .description p:nth-child(3) { font-size:1rem; }
@@ -901,15 +901,11 @@ font-weight: bold;
     <a href="https://instagram.com/funoonfzc" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
         <i class="fab fa-instagram"></i>
     </a>
-    <a href="https://facebook.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+    <a href="https://www.facebook.com/profile.php?id=61577902016847" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
         <i class="fab fa-facebook-f"></i>
     </a>
-    <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+    <a href="https://www.linkedin.com/company/funoon-fzc" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
         <i class="fab fa-linkedin-in"></i>
-    </a>
-    <a href="https://twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-        <i class="fab fa-twitter"></i>
-    </a>
 </div>
     </div>
     <div class="footer-column">
@@ -974,89 +970,6 @@ function toggleMenu(hamburger) {
   document.getElementById("mobileMenu").classList.toggle("show");
 }
 function closeMenu() {
-  document.getElementById("mobileMenu").classList.remove("show");
-  document.querySelector(".hamburger").classList.remove("active");
-}
-
-// Intersection Observer for fade-in
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      if(entry.target.classList.contains('service')){
-        const index = [...entry.target.parentElement.children].indexOf(entry.target);
-        entry.target.style.transitionDelay = `${index * 0.15}s`;
-      }
-      entry.target.classList.add('fade-in');
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.2 });
-document.querySelectorAll('.what-we-provide h2, .what-we-provide .service').forEach(el => observer.observe(el));
-
-document.addEventListener("DOMContentLoaded", () => {
-  const aboutObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("fade-in");
-        aboutObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.2 });
- document.querySelectorAll('.what-we-provide h2, .what-we-provide .service, .cta-button, .about-funoon .cta-button, .about-funoon h2, .about-funoon p, .portfolio-header h2').forEach(el => observer.observe(el));
-});
-</script>
-<script>
-// Loader & Landing Animations
-window.addEventListener("load", () => {
-  const loader = document.getElementById("loader");
-  const nav = document.querySelector("nav");
-  const navLogo = document.querySelector("nav img");
-  const model = document.querySelector(".model-container");
-  const texts = document.querySelectorAll(".description p, .step-title");
-  const ctaContainer = document.querySelector(".cta-container");
-  const ctaButton = document.querySelector(".cta-button");
-
-  // Hide loader
-  setTimeout(() => {
-    loader.classList.add("hidden");
-
-    // Animate navbar logo and nav
-    navLogo.style.top = "0px";
-    navLogo.style.opacity = 1;
-
-    setTimeout(() => {
-      nav.style.transform = "translateX(-50%) translateY(0)";
-      nav.style.opacity = 1;
-    }, 800);
-
-    // Animate 3D model
-    setTimeout(() => {
-      model.style.opacity = 1;
-    }, 1200);
-
-    // Animate text paragraphs and step-title
-    texts.forEach((el, i) => {
-      setTimeout(() => {
-        el.style.opacity = 1;
-        el.style.transform = "translateY(0)";
-      }, 1400 + i * 300);
-    });
-
-    // Animate CTA
-    setTimeout(() => {
-      ctaContainer.style.opacity = 1;
-      ctaButton.classList.add("fade-in");
-    }, 2200);
-  }, 500);
-});
-
-// Mobile Menu Toggle
-function toggleMenu(el) {
-  el.classList.toggle("active");
-  const mobileMenu = document.getElementById("mobileMenu");
-  mobileMenu.classList.toggle("show");
-}
-function closeMenu() {
   const mobileMenu = document.getElementById("mobileMenu");
   mobileMenu.classList.remove("show");
   document.querySelector(".hamburger").classList.remove("active");
@@ -1072,6 +985,32 @@ const appearOnScroll = new IntersectionObserver((entries, observer) => {
     observer.unobserve(entry.target);
   });
 }, options);
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      if(entry.target.classList.contains('service')){
+        const index = [...entry.target.parentElement.children].indexOf(entry.target);
+        entry.target.style.transitionDelay = `${index * 0.15}s`;
+      }
+      entry.target.classList.add('fade-in');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const aboutObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("fade-in");
+        aboutObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+ document.querySelectorAll('.what-we-provide h2, .what-we-provide .service, .cta-button, .about-funoon .cta-button, .about-funoon h2, .about-funoon p, .portfolio-header h2').forEach(el => observer.observe(el));
+ document.querySelectorAll('.what-we-provide h2, .what-we-provide .service').forEach(el => observer.observe(el));
+});
 
 faders.forEach(fader => appearOnScroll.observe(fader));
 document.addEventListener("DOMContentLoaded", () => {
