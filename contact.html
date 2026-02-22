@@ -29,7 +29,7 @@ html, body {
 
 html {
   scroll-behavior: smooth;
-  scrollbar-color: #a89564 rgba(255, 255, 255, 0.05); /* Firefox */
+  scrollbar-color: #a89564 rgba(255, 255, 255, 0.05);
   overflow-y: scroll;
 }
 
@@ -168,39 +168,24 @@ nav .menu a:hover { color:#938875; }
   color: #c9ae5d;
 }
 
-.contact-form .form-group {
-  margin-bottom: 20px;
-}
-.contact-form input, .contact-form textarea {
-  width: 100%;
-  padding: 12px;
-  background: rgba(0,0,0,0.3);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px;
-  color: #fff;
-  font-family: 'Poppins1', sans-serif;
-  font-size: 1rem;
-  box-sizing: border-box;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-.contact-form input:focus, .contact-form textarea:focus {
-  outline: none;
-  border-color: #c9ae5d;
-  box-shadow: 0 0 10px rgba(201, 174, 93, 0.5);
-}
-.contact-form textarea {
-  resize: vertical;
-  min-height: 120px;
+/* ====== Tally Form Styles ====== */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-.submit-btn {
-  padding: 14px 30px; border-radius: 35px; font-family: 'Poppins'; font-size: 1.1rem; border: none; cursor: pointer;
-  background: linear-gradient(135deg, #baa37a, #c9ae5d); color: #111; box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-  transition: all 0.3s ease;
+.tally-wrapper {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
 }
-.submit-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(201, 174, 93, 0.5);
+
+/* Override Tally's default iframe background to match site */
+.tally-wrapper iframe {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 12px;
 }
 
 @media (max-width: 768px) {
@@ -317,27 +302,16 @@ nav .menu a:hover { color:#938875; }
       <h3 style="margin-top: 40px;">Follow Us</h3>
       <div class="social-icons">
         <a href="https://instagram.com/funoonfzc" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.facebook.com/profile.php?id=61577902016847" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
         <a href="https://www.linkedin.com/company/funoon-fzc" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
       </div>
     </div>
 
+    <!-- Tally Form replacing the old HTML form -->
     <div class="contact-form">
-      <form id="contact-form">
-        <div class="form-group">
-          <input type="text" id="name" name="name" placeholder="Your Name" required>
-        </div>
-        <div class="form-group">
-          <input type="email" id="email" name="email" placeholder="Your Email" required>
-        </div>
-        <div class="form-group">
-          <input type="text" id="subject" name="subject" placeholder="Subject" required>
-        </div>
-        <div class="form-group">
-          <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-        </div>
-        <button type="submit" class="submit-btn">Send Message</button>
-      </form>
+      <div class="tally-wrapper">
+       <iframe src="https://tally.so/embed/RG0ll4" width="100%" height="600" frameborder="0"></iframe>
+      </div>
     </div>
   </div>
 </main>
@@ -364,17 +338,12 @@ nav .menu a:hover { color:#938875; }
       </div>
       <div class="footer-social">
         <h3>Connect With Us</h3>
-  <div class="social-icons">
-    <a href="https://instagram.com/funoonfzc" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-        <i class="fab fa-instagram"></i>
-    </a>
-    <a href="https://www.facebook.com/profile.php?id=61577902016847" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-        <i class="fab fa-facebook-f"></i>
-    </a>
-    <a href="https://www.linkedin.com/company/funoon-fzc" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-        <i class="fab fa-linkedin-in"></i>
-</div>
-    </div>
+        <div class="social-icons">
+          <a href="https://instagram.com/funoonfzc" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.linkedin.com/company/funoon-fzc" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
       <div class="footer-column">
         <h3>Contact</h3>
         <p><a href="mailto:cs@funoonfzc.com" aria-label="Email"><i class="fas fa-envelope"></i> cs@funoonfzc.com</a></p>
@@ -395,6 +364,9 @@ nav .menu a:hover { color:#938875; }
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
 
+<!-- Tally Embed Script (makes dynamicHeight & transparentBackground work) -->
+<script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
+
 <script>
 // DOM Load
 document.addEventListener("DOMContentLoaded", () => {
@@ -412,6 +384,23 @@ document.addEventListener("DOMContentLoaded", () => {
     logo.style.top = "0";
   }, 200);
 
+  // Hamburger menu
+  function toggleMenu() {
+    hamburger.classList.toggle("active");
+    mobileMenu.classList.toggle("show");
+  }
+  function closeMenu() {
+    hamburger.classList.remove("active");
+    mobileMenu.classList.remove("show");
+  }
+  closeBtn.addEventListener("click", closeMenu);
+  mobileMenu.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", closeMenu);
+  });
+  hamburger.addEventListener("click", toggleMenu);
+  window.toggleMenu = toggleMenu;
+  window.closeMenu = closeMenu;
+
   // Scroll animations
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, index) => {
@@ -425,43 +414,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.fade-in').forEach(el => {
     observer.observe(el);
   });
-
-  // Contact Form Mailto Logic
-  const contactForm = document.getElementById('contact-form');
-  if (contactForm) {
-    contactForm.addEventListener('submit', function(event) {
-      event.preventDefault(); // Stop the form from submitting the traditional way
-
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const subject = document.getElementById('subject').value;
-      const message = document.getElementById('message').value;
-
-      const mailtoSubject = encodeURIComponent(subject);
-      const mailtoBody = encodeURIComponent(
-        `Hello Funoon,\n\nMy name is ${name} (${email}).\n\nI have a message for you:\n\n${message}`
-      );
-
-      // Construct the mailto link
-      const mailtoLink = `mailto:cs@funoonfzc.com?subject=${mailtoSubject}&body=${mailtoBody}`;
-
-      // Open the user's default email client
-      window.location.href = mailtoLink;
-    });
-  }
 });
-
-// Hamburger menu
-function toggleMenu() {
-  document.querySelector(".hamburger").classList.toggle("active");
-  document.getElementById("mobileMenu").classList.toggle("show");
-}
-function closeMenu() {
-  document.querySelector(".hamburger").classList.remove("active");
-  document.getElementById("mobileMenu").classList.remove("show");
-}
-window.toggleMenu = toggleMenu;
-window.closeMenu = closeMenu;
 
 // Three.js Background
 (function () {
