@@ -394,7 +394,7 @@ html {
       </div>
       <div class="footer-social">
         <h3>Connect With Us</h3>
-    <div class="social-icons">
+<div class="social-icons">
     <a href="https://instagram.com/funoonfzc" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
         <i class="fab fa-instagram"></i>
     </a>
@@ -442,6 +442,23 @@ document.addEventListener("DOMContentLoaded", () => {
     logo.style.top = "0";
   }, 200);
 
+  // Hamburger menu
+  function toggleMenu() {
+    hamburger.classList.toggle("active");
+    mobileMenu.classList.toggle("show");
+  }
+  function closeMenu() {
+    hamburger.classList.remove("active");
+    mobileMenu.classList.remove("show");
+  }
+  closeBtn.addEventListener("click", closeMenu);
+  mobileMenu.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", closeMenu);
+  });
+  hamburger.addEventListener("click", toggleMenu);
+  window.toggleMenu = toggleMenu;
+  window.closeMenu = closeMenu;
+
   // Fade-in menu links
   menuLinks.forEach((link, index) => {
     link.style.opacity = "0";
@@ -470,18 +487,6 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(el);
   });
 });
-
-// Hamburger menu
-function toggleMenu() {
-  document.querySelector(".hamburger").classList.toggle("active");
-  document.getElementById("mobileMenu").classList.toggle("show");
-}
-function closeMenu() {
-  document.querySelector(".hamburger").classList.remove("active");
-  document.getElementById("mobileMenu").classList.remove("show");
-}
-window.toggleMenu = toggleMenu;
-window.closeMenu = closeMenu;
 
 // ===========================
 // Digital Rain Background

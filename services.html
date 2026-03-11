@@ -510,7 +510,7 @@ font-weight: bold;
     <a href="products.html">Products</a>
     <a href="contact.html">Contact</a>
   </div>
-  <div class="hamburger" onclick="toggleMenu()">
+  <div class="hamburger">
     <div></div><div></div><div></div>
   </div>
   <div class="menu mobile-menu" id="mobileMenu">
@@ -640,6 +640,21 @@ font-weight: bold;
       logo.style.top = "0";
     }, 200); // delay to show fade-in effect
 
+    // Hamburger toggle for mobile menu
+    function toggleMenu() {
+      hamburger.classList.toggle("active");
+      mobileMenu.classList.toggle("show");
+    }
+
+    function closeMenu() {
+      hamburger.classList.remove("active");
+      mobileMenu.classList.remove("show");
+    }
+
+    // Attach events
+    hamburger.addEventListener("click", toggleMenu);
+    closeBtn.addEventListener("click", closeMenu);
+
     // Close mobile menu when a link is clicked
     mobileMenu.querySelectorAll("a").forEach(link => {
       link.addEventListener("click", closeMenu);
@@ -656,19 +671,6 @@ font-weight: bold;
       }, 400 + index * 100);
     });
   });
-
-// Hamburger toggle for mobile menu
-function toggleMenu() {
-  document.querySelector(".hamburger").classList.toggle("active");
-  document.getElementById("mobileMenu").classList.toggle("show");
-}
-
-function closeMenu() {
-  document.querySelector(".hamburger").classList.remove("active");
-  document.getElementById("mobileMenu").classList.remove("show");
-}
-window.toggleMenu = toggleMenu;
-window.closeMenu = closeMenu;
 
 // =======================
 // Services Section Reveal
